@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import Node from './Node'
 import './mainPathFinder.css'
+import './Algorithms/djikstra'
+import calculatePath from './Algorithms/djikstra';
 
 const START_NODE_ROW = 10;
 const START_NODE_COL = 10;
@@ -51,7 +53,7 @@ export default class PathFinder extends Component{
         //todo
         //implement algorithm
 
-        
+        calculatePath(this.state, START_NODE_ROW, START_NODE_COL)
     }
 
 
