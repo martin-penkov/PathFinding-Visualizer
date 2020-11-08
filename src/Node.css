@@ -1,0 +1,16 @@
+.node {
+    width: 25px;
+    height: 25px;
+    display: inline-block;
+    outline: 1px solid grey;
+}
+
+div.nodestart {
+    outline:3px solid darkgreen;
+    background-color: rgb(58, 58, 58);
+}
+
+div.nodefinish{
+    outline:3px solid darkred;
+    background-color: rgb(58, 58, 58);
+}
