@@ -3,6 +3,7 @@ import Node from './Node'
 import './mainPathFinder.css'
 import './Algorithms/djikstra'
 import calculatePath from './Algorithms/djikstra';
+import ReactDOM from 'react-dom'
 
 const START_NODE_ROW = 10;
 const START_NODE_COL = 10;
@@ -52,8 +53,9 @@ export default class PathFinder extends Component{
     visualizeDijkstra() {
         //todo
         //implement algorithm
-
-        calculatePath(this.state, START_NODE_ROW, START_NODE_COL)
+        
+        this.state =  {grid:calculatePath(this.state, START_NODE_ROW, START_NODE_COL)}
+        ReactDOM.render(this.render())
     }
 
 
@@ -70,7 +72,7 @@ export default class PathFinder extends Component{
             return (
               <div key={rowIdx}>
                 {row.map((node, nodeIdx) => {
-                  const {row, col, isFinish, isStart, isWall} = node;
+                  const {row, col, isFinish, isStart, isWall, isVisited} = node;
                   return (
                     <Node
                       key={nodeIdx}
@@ -79,6 +81,7 @@ export default class PathFinder extends Component{
                       isFinish={isFinish}
                       isStart={isStart}
                       isWall={isWall}
+                      isVisited={isVisited}
                       ></Node>
                   );
                 })}

@@ -8,11 +8,12 @@ class Node extends React.Component {
             col,
             isFinish,
             isStart,
-            isWall
+            isWall,
+            isVisited
         } = this.props
         let returnOutput = React.createElement('div', 
             {id:`node_row:${row}   node_col:${col}`,
-             className:`node${isFinish ? ' nodefinish' : ''}${isStart ? ' nodestart' : ''}${isWall ? ' nodewall' : ''}`})
+             className:`node${isFinish ? ' nodefinish' : ''}${isStart ? ' nodestart' : ''}${isWall ? ' nodewall' : ''}${isFinish ? ' nodevisited' : ''}`})
         
         return (
             returnOutput

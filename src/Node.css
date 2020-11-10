@@ -14,3 +14,7 @@ div.nodefinish{
     outline:3px solid darkred;
     background-color: rgb(58, 58, 58);
 }
+
+.nodevisited{
+    background-color: blueviolet;
+}
