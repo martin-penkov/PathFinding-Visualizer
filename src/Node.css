@@ -15,6 +15,6 @@ div.nodefinish{
     background-color: rgb(58, 58, 58);
 }
 
-.nodevisited{
+div.nodevisited{
     background-color: blueviolet;
 }

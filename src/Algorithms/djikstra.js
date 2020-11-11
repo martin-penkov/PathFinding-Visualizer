@@ -1,38 +1,43 @@
-import React from 'react';
-function calculatePath(grid, start_node_row, start_node_col){
+
+function calculatePath(grid, start_node_row, start_node_col, currentVertex, neighboursArr){
     let updateGrid = grid;
     let pathTree = [];
-    let currentVertex = null
-    let neighboursArr = [];
     let defaultNodeWeight = 1;  //gap between each node
 
-
+    return {grid: main(), currentVertex: currentVertex, neighbourArr: neighboursArr}
 
     function main(){
         UpdateCurrentVertex();
         //get adjacent nodes
         neighboursArr = GetAdjacentNodes(updateGrid.grid)
 
-        CalculateDistance(neighboursArr, currentVertex)
-
-        //update state for current node and neighbour node
+        CalculateDistance()
+        for (let i = 0; i < neighboursArr.length; i++) {
+            const element = neighboursArr[i];
+            updateGrid.grid[element.row][element.col] = element
+        }
+        updateGrid.grid[currentVertex.row][currentVertex.col] = currentVertex;
+        return updateGrid;
         //loop this function until the finishnode is reached
     }
     //find currentVertex in grid
     function UpdateCurrentVertex(){
-        for(const [key, rowsArray] of Object.entries(updateGrid)){
-            for (let rowIdx = 0; rowIdx < rowsArray.length; rowIdx++) {
-                const row = rowsArray[rowIdx];
-                
-                
-                currentVertex = row.map((node) => {
-                    if(node.row === start_node_row && node.col === start_node_col){
-                        node.distance = 0;
-                        
-                        return node;
-                    }
-                })
-            }
+        if(currentVertex !== null){
+            let temp = Infinity;
+            neighboursArr.map((node) => {
+                if(node.distance < temp){
+                    temp = node.distance
+                }
+            })
+            currentVertex = neighboursArr.find((node) => {
+                if(node.distance === temp){
+                    return node;
+                }
+            })
+        }
+        else{
+            currentVertex = updateGrid.grid[start_node_row][start_node_col]
+            currentVertex.distance = 0;
         }
     }
     
@@ -71,15 +76,16 @@ function calculatePath(grid, start_node_row, start_node_col){
         return neighboursArr
     }
 
-    function CalculateDistance(neighbourNodes, currentNode){
-        neighbourNodes = neighbourNodes.map((node) => {
-            if(defaultNodeWeight + currentNode.distance < node.distance){
-                node.distance = defaultNodeWeight + currentNode.distance;
+    function CalculateDistance(){
+        neighboursArr = neighboursArr.map((node) => {
+            if(defaultNodeWeight + currentVertex.distance < node.distance){
+                node.distance = defaultNodeWeight + currentVertex.distance;
                 
             }
-            node.previousNode = currentNode
+            node.previousNode = currentVertex
+            return node
         })
-        currentNode.isVisited = true;
+        currentVertex.isVisited = true;
     }
     //check currentvertex node neighbours and sum current distance with 1 (aka the default distance between each node) after that check 
     // each distance value and take the lower one ... repeat for every adjacent node while ignoring the visited ones. 
