@@ -3,6 +3,7 @@ function calculatePath(grid, start_node_row, start_node_col, currentVertex, neig
     let updateGrid = grid;
     let pathTree = [];
     let defaultNodeWeight = 1;  //gap between each node
+    
 
     return {grid: main(), currentVertex: currentVertex, neighbourArr: neighboursArr}
 
@@ -40,24 +41,22 @@ function calculatePath(grid, start_node_row, start_node_col, currentVertex, neig
             currentVertex.distance = 0;
         }
     }
-    
     //set distance of adjacent nodes
-    
-    function updateState(updatedGrid, updatedNode){
-        updatedGrid[updatedNode.row][updatedNode.col] = updatedNode;
-        return updatedGrid;
-        
-    }
-
-
-
-
+    // function updateState(updatedGrid, updatedNode){
+    //     updatedGrid[updatedNode.row][updatedNode.col] = updatedNode;
+    //     return updatedGrid;
+    // }
     function GetAdjacentNodes(rowsArray){
         let neighboursArr = [];
         let topNeighbour = rowsArray[start_node_row-1][start_node_col]
         let rightNeighbour = rowsArray[start_node_row][start_node_col+1]
         let bottomNeighbour = rowsArray[start_node_row+1][start_node_col]
         let leftNeighbour = rowsArray[start_node_row][start_node_col-1]
+
+        // let topNeighbour = rowsArray[rootNode.node.row-1][rootNode.node.col]
+        // let rightNeighbour = rowsArray[rootNode.node.row][rootNode.node.col+1]
+        // let bottomNeighbour = rowsArray[rootNode.node.row+1][rootNode.node.col]
+        // let leftNeighbour = rowsArray[rootNode.node.row][rootNode.node.col-1]
         
         if(!topNeighbour.isVisited){
             neighboursArr.push(topNeighbour)
@@ -77,6 +76,7 @@ function calculatePath(grid, start_node_row, start_node_col, currentVertex, neig
     }
 
     function CalculateDistance(){
+
         neighboursArr = neighboursArr.map((node) => {
             if(defaultNodeWeight + currentVertex.distance < node.distance){
                 node.distance = defaultNodeWeight + currentVertex.distance;
