@@ -51,14 +51,11 @@ export default class PathFinder extends Component{
       }
 
     visualizeDijkstra() {
-      let tempCurrentVertex = null
-      let tempNeighboursArr = [];
-      let rootNode = {node: null, neighbours: []};
+      let previousNeighbours = []
         
         setInterval(() => {
-          let output = calculatePath(this.state, START_NODE_ROW, START_NODE_COL, tempCurrentVertex, tempNeighboursArr, rootNode)
-          tempCurrentVertex = output.currentVertex
-          tempNeighboursArr = output.neighbourArr
+          let output = calculatePath(this.state, START_NODE_ROW, START_NODE_COL, previousNeighbours)
+          previousNeighbours = output.previousNeighbours
           this.setState({output});
           ReactDOM.render(this.render(), document.getElementById('root'));
         }, 200);

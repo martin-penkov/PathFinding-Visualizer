@@ -1,44 +1,38 @@
 
-function calculatePath(grid, start_node_row, start_node_col, currentVertex, neighboursArr){
+function calculatePath(grid, start_node_row, start_node_col, previousNeighbours){
     let updateGrid = grid;
-    let pathTree = [];
+    //let pathTree = [];
     let defaultNodeWeight = 1;  //gap between each node
-    
+    let newNeighbours = [];
 
-    return {grid: main(), currentVertex: currentVertex, neighbourArr: neighboursArr}
+
+    return {grid: main(), previousNeighbours}
 
     function main(){
         UpdateCurrentVertex();
         //get adjacent nodes
-        neighboursArr = GetAdjacentNodes(updateGrid.grid)
+        GetAdjacentNodes(updateGrid.grid)
 
         CalculateDistance()
-        for (let i = 0; i < neighboursArr.length; i++) {
-            const element = neighboursArr[i];
-            updateGrid.grid[element.row][element.col] = element
+        for (let i = 0; i < previousNeighbours.length; i++) {
+            const node = previousNeighbours[i];
+            updateGrid.grid[node.row][node.col] = node
         }
-        updateGrid.grid[currentVertex.row][currentVertex.col] = currentVertex;
+        previousNeighbours = [];
+        for (let i = 0; i < newNeighbours.length; i++) {
+            const element = newNeighbours[i];
+            updateGrid.grid[element.row][element.col] = element
+            previousNeighbours.push(element);
+        }
         return updateGrid;
-        //loop this function until the finishnode is reached
     }
     //find currentVertex in grid
     function UpdateCurrentVertex(){
-        if(currentVertex !== null){
-            let temp = Infinity;
-            neighboursArr.map((node) => {
-                if(node.distance < temp){
-                    temp = node.distance
-                }
-            })
-            currentVertex = neighboursArr.find((node) => {
-                if(node.distance === temp){
-                    return node;
-                }
-            })
-        }
-        else{
-            currentVertex = updateGrid.grid[start_node_row][start_node_col]
-            currentVertex.distance = 0;
+        if(previousNeighbours.length === 0){
+            //Find first element and set distance to
+            let startVertex = updateGrid.grid[start_node_row][start_node_col]
+            startVertex.distance = 0;
+            previousNeighbours.push(startVertex);
         }
     }
     //set distance of adjacent nodes
@@ -47,52 +41,55 @@ function calculatePath(grid, start_node_row, start_node_col, currentVertex, neig
     //     return updatedGrid;
     // }
     function GetAdjacentNodes(rowsArray){
-        let neighboursArr = [];
-        let topNeighbour = rowsArray[start_node_row-1][start_node_col]
-        let rightNeighbour = rowsArray[start_node_row][start_node_col+1]
-        let bottomNeighbour = rowsArray[start_node_row+1][start_node_col]
-        let leftNeighbour = rowsArray[start_node_row][start_node_col-1]
-
-        // let topNeighbour = rowsArray[rootNode.node.row-1][rootNode.node.col]
-        // let rightNeighbour = rowsArray[rootNode.node.row][rootNode.node.col+1]
-        // let bottomNeighbour = rowsArray[rootNode.node.row+1][rootNode.node.col]
-        // let leftNeighbour = rowsArray[rootNode.node.row][rootNode.node.col-1]
-        
-        if(!topNeighbour.isVisited){
-            neighboursArr.push(topNeighbour)
+        for (let i = 0; i < previousNeighbours.length; i++) {
+            const neighbour = previousNeighbours[i];
+            let topNeighbour = rowsArray[neighbour.row-1][neighbour.col]
+            topNeighbour.rootNeighbour = neighbour
+            let rightNeighbour = rowsArray[neighbour.row][neighbour.col+1]
+            rightNeighbour.rootNeighbour = neighbour
+            let bottomNeighbour = rowsArray[neighbour.row+1][neighbour.col]
+            bottomNeighbour.rootNeighbour = neighbour
+            let leftNeighbour = rowsArray[neighbour.row][neighbour.col-1]
+            leftNeighbour.rootNeighbour = neighbour
+            //remove visited ones
+            if(!topNeighbour.isVisited){
+                newNeighbours.push(topNeighbour)
+            }
+            if(!rightNeighbour.isVisited){
+                newNeighbours.push(rightNeighbour)
+            }
+            if(!bottomNeighbour.isVisited){
+                newNeighbours.push(bottomNeighbour)
+            }
+            if(!leftNeighbour.isVisited){
+                newNeighbours.push(leftNeighbour)
+            }
         }
-        if(!rightNeighbour.isVisited){
-            neighboursArr.push(rightNeighbour)
-        }
-        if(!bottomNeighbour.isVisited){
-            neighboursArr.push(bottomNeighbour)
-        }
-        if(!leftNeighbour.isVisited){
-            neighboursArr.push(leftNeighbour)
-        }
-
-        console.log(neighboursArr)
-        return neighboursArr
+        console.log(newNeighbours)
     }
 
     function CalculateDistance(){
 
-        neighboursArr = neighboursArr.map((node) => {
-            if(defaultNodeWeight + currentVertex.distance < node.distance){
-                node.distance = defaultNodeWeight + currentVertex.distance;
-                
+        newNeighbours = newNeighbours.map((node) => {
+            if(defaultNodeWeight + node.rootNeighbour.distance < node.distance){
+                node.distance = defaultNodeWeight + node.rootNeighbour.distance;
             }
-            node.previousNode = currentVertex
+            //node.previousNode = currentVertex
             return node
         })
-        currentVertex.isVisited = true;
+
+        for (let i = 0; i < previousNeighbours.length; i++) {
+            const node = previousNeighbours[i];
+            node.isVisited = true;
+        }
     }
+}
+
+export default calculatePath
+
+//initial method
+
     //check currentvertex node neighbours and sum current distance with 1 (aka the default distance between each node) after that check 
     // each distance value and take the lower one ... repeat for every adjacent node while ignoring the visited ones. 
     //the one with smallest distance should be taken first and checked 
     //IMPORTANT!!!!! 
-}
-
-
-export default calculatePath
-
