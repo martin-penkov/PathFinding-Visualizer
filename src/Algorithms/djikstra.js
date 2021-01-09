@@ -24,6 +24,10 @@ function calculatePath(grid, start_node_row, start_node_col, previousNeighbours)
             updateGrid.grid[element.row][element.col] = element
             previousNeighbours.push(element);
         }
+
+
+        let noDuplicates = ([...new Set(previousNeighbours)])
+        previousNeighbours = [...noDuplicates]
         return updateGrid;
     }
     //find currentVertex in grid
@@ -70,6 +74,10 @@ function calculatePath(grid, start_node_row, start_node_col, previousNeighbours)
 
     function CalculateDistance(){
 
+        
+
+        
+
         newNeighbours = newNeighbours.map((node) => {
             if(defaultNodeWeight + node.rootNeighbour.distance < node.distance){
                 node.distance = defaultNodeWeight + node.rootNeighbour.distance;
@@ -77,7 +85,7 @@ function calculatePath(grid, start_node_row, start_node_col, previousNeighbours)
             //node.previousNode = currentVertex
             return node
         })
-
+        
         for (let i = 0; i < previousNeighbours.length; i++) {
             const node = previousNeighbours[i];
             node.isVisited = true;
