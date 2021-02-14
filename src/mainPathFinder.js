@@ -37,7 +37,7 @@ function GetNode(row, col){
     }
 }
 
-
+//pathfinder class
 export default class PathFinder extends Component{
     constructor() {
         super();
@@ -53,13 +53,21 @@ export default class PathFinder extends Component{
     visualizeDijkstra() {
       let previousNeighbours = []
         
-        setInterval(() => {
+        let intervalId = setInterval(() => {
           let output = calculatePath(this.state, START_NODE_ROW, START_NODE_COL, previousNeighbours)
           previousNeighbours = output.previousNeighbours
           this.setState({output});
           ReactDOM.render(this.render(), document.getElementById('root'));
-        }, 200);
+          
+          console.log(this.state)
+          if(document.getElementsByClassName('nodefinish nodevisited').length === 1) 
+          {visualizeResult()}
+        }, 100);
         
+
+        function visualizeResult() {
+          clearInterval(intervalId)
+        }
     }
 
     render() {

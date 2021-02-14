@@ -47,27 +47,44 @@ function calculatePath(grid, start_node_row, start_node_col, previousNeighbours)
     function GetAdjacentNodes(rowsArray){
         for (let i = 0; i < previousNeighbours.length; i++) {
             const neighbour = previousNeighbours[i];
-            let topNeighbour = rowsArray[neighbour.row-1][neighbour.col]
-            topNeighbour.rootNeighbour = neighbour
-            let rightNeighbour = rowsArray[neighbour.row][neighbour.col+1]
-            rightNeighbour.rootNeighbour = neighbour
-            let bottomNeighbour = rowsArray[neighbour.row+1][neighbour.col]
-            bottomNeighbour.rootNeighbour = neighbour
-            let leftNeighbour = rowsArray[neighbour.row][neighbour.col-1]
-            leftNeighbour.rootNeighbour = neighbour
+            
+            try {
+                var topNeighbour = rowsArray[neighbour.row-1][neighbour.col]
+                topNeighbour.rootNeighbour = neighbour
+            } catch(err){}
+            try {
+                var rightNeighbour = rowsArray[neighbour.row][neighbour.col+1]
+                rightNeighbour.rootNeighbour = neighbour
+            } catch(err){}
+            try{
+                var bottomNeighbour = rowsArray[neighbour.row+1][neighbour.col]
+                bottomNeighbour.rootNeighbour = neighbour
+            } catch(err) {}
+            try{
+                var leftNeighbour = rowsArray[neighbour.row][neighbour.col-1]
+                leftNeighbour.rootNeighbour = neighbour
+            } catch(err) {}
             //remove visited ones
+            try {
             if(!topNeighbour.isVisited){
                 newNeighbours.push(topNeighbour)
             }
+            } catch(err) {}
+            try {
             if(!rightNeighbour.isVisited){
                 newNeighbours.push(rightNeighbour)
             }
+            } catch(err) {}
+            try{
             if(!bottomNeighbour.isVisited){
                 newNeighbours.push(bottomNeighbour)
             }
+            } catch(err) {}
+            try{
             if(!leftNeighbour.isVisited){
                 newNeighbours.push(leftNeighbour)
             }
+            } catch(err) {}
         }
         console.log(newNeighbours)
     }
